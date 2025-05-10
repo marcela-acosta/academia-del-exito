@@ -1,0 +1,22 @@
+# Entornos virtuales
+api_env/
+venv/
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Archivos temporales
+*.log
+*.DS_Store
+*.swp
+
+# Streamlit config
+.streamlit/
+
+# Docker build cache
+*.db
+*.bak
+*.tar
