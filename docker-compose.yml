@@ -9,5 +9,10 @@ services:
     volumes:
       - .:/app
     env_file: 
-      - .env  
-
+      - .env
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia  # IMPORTANTE para usar GPU

@@ -1,3 +1,4 @@
+numpy<2
 fastapi
 uvicorn
 streamlit
@@ -6,7 +7,6 @@ langchain
 langchain-community
 accelerate
 transformers
-torch
 sentence-transformers
 huggingface-hub
 pypdf

@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from backend.rag_chain import initialize_rag_pipeline
-import uvicorn
 
 print("🔥 Inicializando FastAPI...")
 
@@ -18,6 +17,3 @@ class Question(BaseModel):
 async def preguntar(item: Question):
     respuesta = qa_chain.run(item.question)
     return {"respuesta": respuesta}
-
-if __name__ == "__main__":
-    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
