@@ -255,8 +255,11 @@ export default function CursosPage({ showEnrollmentForm: showFormProp }: { showE
               <p className="text-blue-800 dark:text-blue-300 font-bold text-lg">Ya estás a un paso de tu futuro:</p>
               <video
                 controls
+                autoPlay
+                playsinline
+                preload="metadata"
                 className="w-full max-w-2xl mx-auto rounded-lg"
-                src="https://zwigp4wtrpf7zjex.public.blob.vercel-storage.com/video-pSabsj1WEObygDwryLGdpGgAdKEKUS.mp4"
+                src="https://zwigp4wtrpf7zjex.public.blob.vercel-storage.com/video-pg4NtpaJbR49g1zdCrSGGobfkvV5m8.mp4"
               >
                 Tu navegador no soporta el elemento de video.
               </video>
