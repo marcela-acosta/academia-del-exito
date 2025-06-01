@@ -454,7 +454,7 @@ def show_cursos_entrenadores_page():
                     st.success("¡Gracias por tu interés! Nos pondremos en contacto para completar tu inscripción.")
                     st.markdown('<p class="future-step">Ya estás a un paso de tu futuro:</p>', unsafe_allow_html=True)
                     # Mostrar el video motivador
-                    st.video("../video.mp4")
+                    st.video("frontend/video.mp4")
                 # Opcional: Limpiar el formulario o ocultarlo
                 # st.session_state.show_enrollment_form = False # Para ocultar el form después de enviar
 
