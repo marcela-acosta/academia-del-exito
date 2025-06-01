@@ -33,7 +33,7 @@ def load_documents(pdf_path: str, chunk_size=1000, chunk_overlap=200) -> List[Do
     splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
     return splitter.split_documents(pages)
 
-def create_vector_index(documents: List[Document], embedding_model_name = "sentence-transformers/paraphrase-MiniLM-L3-v2"):
+def create_vector_index(documents: List[Document], embedding_model_name="intfloat/multilingual-e5-large"):
     embeddings = HuggingFaceEmbeddings(model_name=embedding_model_name)
     faiss_index = FAISS.from_documents(documents, embeddings)
     retriever = faiss_index.as_retriever(search_type="similarity", search_kwargs={"k": 4})
