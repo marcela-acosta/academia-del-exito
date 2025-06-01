@@ -3,26 +3,23 @@ import torch
 from dotenv import load_dotenv
 from typing import List
 
-from transformers import pipeline
-from huggingface_hub import login
-
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_community.llms import HuggingFacePipeline
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain.schema import Document
 
+# Importar ChatOpenAI
+from langchain_openai import ChatOpenAI
+
 # Cargar variables de entorno
 load_dotenv()
-hf_token = os.getenv("HF_TOKEN")
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
-if not hf_token:
-    raise ValueError("El token de HuggingFace (HF_TOKEN) no está definido en el archivo .env")
-
-login(token=hf_token)
+if not openai_api_key:
+    raise ValueError("La clave de API de OpenAI (OPENAI_API_KEY) no está definida en el archivo .env")
 
 def load_documents(pdf_path: str, chunk_size=1000, chunk_overlap=200) -> List[Document]:
     loader = PyPDFLoader(pdf_path)
@@ -42,22 +39,11 @@ def create_vector_index(documents: List[Document], embedding_model_name="intfloa
     retriever = faiss_index.as_retriever(search_type="similarity", search_kwargs={"k": 4})
     return retriever
 
-
-def load_llm(model_id="meta-llama/Llama-3.2-3B-Instruct"):
-    print(f"🟢 Ejecutando en: {'GPU - ' + torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU'}")
-    pipe = pipeline(
-        "text-generation",
-        model=model_id,
-        torch_dtype=torch.float16,
-        device=0,
-        temperature=0.1,
-        do_sample=True,
-        repetition_penalty=1.1,
-        return_full_text=False,
-        max_new_tokens=500,
-    )
-    return HuggingFacePipeline(pipeline=pipe)
-
+def load_llm(model_name="gpt-4o-mini"):
+    print("🧠 Cargando modelo LLM de OpenAI...")
+    # Usar ChatOpenAI con la clave de API cargada
+    llm = ChatOpenAI(model=model_name, api_key=openai_api_key)
+    return llm
 
 def build_qa_chain(llm, retriever):
     prompt_template = """
@@ -84,13 +70,13 @@ def build_qa_chain(llm, retriever):
         chain_type_kwargs={"prompt": prompt}
     )
 
-
 # Método utilitario para cargar todo en uno
 def initialize_rag_pipeline(pdf_path: str):
     docs = load_documents(pdf_path)
     retriever = create_vector_index(docs)
 
     print("🧠 Cargando modelo LLM...")
-    llm = load_llm()
+    # La carga del LLM ahora se hace dentro de load_llm usando la API key
+    llm = load_llm() # Llamar a la función load_llm sin argumentos para usar el modelo por defecto o el especificado en la función
 
     return build_qa_chain(llm, retriever)
